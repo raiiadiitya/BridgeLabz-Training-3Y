@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!-- 
+  Task 8: Create a Student Report Page:
+  - <h1> for school name.
+  - <table> for marks of 5 subjects.
+  - Add a row that shows Total and Percentage (no calculation needed, just text).
+  - Use attributes like rowspan, colspan, and title to improve clarity.
+-->
+<html lang="en">
+<head>
+    <title>Student Report Page</title>
+</head>
+<body>
+
+    <h1>Greenfield Public School</h1>
+    <h2>Student Report Card</h2>
+
+    <table border="1">
+        <tr>
+            <th>Subject</th>
+            <th title="Marks obtained out of 100">Marks Obtained</th>
+        </tr>
+        <tr>
+            <td>Mathematics</td>
+            <td>92</td>
+        </tr>
+        <tr>
+            <td>Computer Science</td>
+            <td>95</td>
+        </tr>
+        <tr>
+            <td>English</td>
+            <td>85</td>
+        </tr>
+        <tr>
+            <td>Physics</td>
+            <td>88</td>
+        </tr>
+        <tr>
+            <td>Chemistry</td>
+            <td>84</td>
+        </tr>
+        <tr>
+            <td colspan="1" title="Sum of all subject marks"><strong>Total</strong></td>
+            <td>444 / 500</td>
+        </tr>
+        <tr>
+            <td title="Overall percentage score"><strong>Percentage</strong></td>
+            <td>88.8%</td>
+        </tr>
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!-- 
+  Task 2: Build a Product Catalog page for an online store using only HTML.
+  - Use a <table> to list products with columns: Product Name, Description, Price, Availability.
+  - Add one image per product using <img> inside a cell.
+  - Use attributes like colspan and rowspan where necessary.
+-->
+<html lang="en">
+<head>
+    <title>Product Catalog</title>
+</head>
+<body>
+
+    <h1>Online Store - Product Catalog</h1>
+
+    <table border="1">
+        <tr>
+            <th>Image</th>
+            <th>Product Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Availability</th>
+        </tr>
+        <tr>
+            <td><img src="images/laptop.jpg" alt="A silver laptop with an open screen" width="80"></td>
+            <td>Laptop</td>
+            <td>15-inch laptop with 8GB RAM and 256GB SSD</td>
+            <td>&#8377;45,000</td>
+            <td>In Stock</td>
+        </tr>
+        <tr>
+            <td><img src="images/headphones.jpg" alt="Black over-ear wireless headphones" width="80"></td>
+            <td>Wireless Headphones</td>
+            <td>Noise-cancelling over-ear headphones</td>
+            <td>&#8377;2,500</td>
+            <td>In Stock</td>
+        </tr>
+        <tr>
+            <td><img src="images/smartwatch.jpg" alt="Black smartwatch with round dial" width="80"></td>
+            <td>Smartwatch</td>
+            <td>Fitness tracking smartwatch with heart rate monitor</td>
+            <td>&#8377;3,200</td>
+            <td>Out of Stock</td>
+        </tr>
+        <!-- Row demonstrating colspan: a full-width note spanning all columns -->
+        <tr>
+            <td colspan="5">Note: Prices are subject to change without prior notice.</td>
+        </tr>
+        <!-- Rows demonstrating rowspan: two products sharing the same "Availability" cell -->
+        <tr>
+            <td><img src="images/mouse.jpg" alt="Wireless computer mouse" width="80"></td>
+            <td>Wireless Mouse</td>
+            <td>Ergonomic wireless mouse</td>
+            <td>&#8377;600</td>
+            <td rowspan="2">In Stock (Combo Offer)</td>
+        </tr>
+        <tr>
+            <td><img src="images/keyboard.jpg" alt="Compact wireless keyboard" width="80"></td>
+            <td>Wireless Keyboard</td>
+            <td>Compact keyboard with numeric pad</td>
+            <td>&#8377;900</td>
+        </tr>
+    </table>
+
+</body>
+</html>

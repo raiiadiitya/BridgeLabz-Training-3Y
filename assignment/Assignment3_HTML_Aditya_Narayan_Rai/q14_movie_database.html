@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!-- 
+  Task 14: Create a Movie Database Page using a <table>:
+  - Columns: Movie Name, Genre, Year, IMDB Rating, and Link.
+  - Include attributes like border, title, and colspan.
+  - Add a caption at the top and a note at the bottom using <small>.
+-->
+<html lang="en">
+<head>
+    <title>Movie Database</title>
+</head>
+<body>
+
+    <h1>Movie Database</h1>
+
+    <table border="1" title="List of popular movies with ratings">
+        <caption>Top Rated Movies of All Time</caption>
+        <tr>
+            <th>Movie Name</th>
+            <th>Genre</th>
+            <th>Year</th>
+            <th>IMDB Rating</th>
+            <th>Link</th>
+        </tr>
+        <tr>
+            <td>The Shawshank Redemption</td>
+            <td>Drama</td>
+            <td>1994</td>
+            <td>9.3</td>
+            <td><a href="#" target="_blank">View</a></td>
+        </tr>
+        <tr>
+            <td>Inception</td>
+            <td>Sci-Fi</td>
+            <td>2010</td>
+            <td>8.8</td>
+            <td><a href="#" target="_blank">View</a></td>
+        </tr>
+        <tr>
+            <td>3 Idiots</td>
+            <td>Comedy-Drama</td>
+            <td>2009</td>
+            <td>8.4</td>
+            <td><a href="#" target="_blank">View</a></td>
+        </tr>
+        <tr>
+            <td colspan="5">Ratings are based on publicly available data and may change over time.</td>
+        </tr>
+    </table>
+
+    <p><small>Note: All ratings shown are for reference purposes only.</small></p>
+
+</body>
+</html>

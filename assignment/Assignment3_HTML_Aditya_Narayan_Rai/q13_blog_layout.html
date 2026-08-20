@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!-- 
+  Task 13: Build a Blog Layout Page using HTML5 semantic structure:
+  - <header> -> Blog name
+  - <nav> -> Menu (Home, Blogs, About)
+  - <main> ->
+      <article> 1: "My First Blog"
+      <article> 2: "Things I Learned This Week"
+  - Each article should have its own heading, paragraph, <time> tag, and <blockquote> inside.
+  - <footer> -> "Written by [Your Name]".
+-->
+<html lang="en">
+<head>
+    <title>My Blog</title>
+</head>
+<body>
+
+    <header>
+        <h1>Aditya's Tech Blog</h1>
+    </header>
+
+    <nav>
+        <a href="#">Home</a> |
+        <a href="#">Blogs</a> |
+        <a href="#">About</a>
+    </nav>
+
+    <main>
+
+        <article>
+            <h2>My First Blog</h2>
+            <p><time datetime="2025-08-10">August 10, 2025</time></p>
+            <p>
+                Starting this blog has been an exciting step for me. I plan to share 
+                my journey of learning web development and cybersecurity, along with 
+                the projects I build along the way.
+            </p>
+            <blockquote>
+                "The best way to learn is to build, break, and learn again."
+            </blockquote>
+        </article>
+
+        <article>
+            <h2>Things I Learned This Week</h2>
+            <p><time datetime="2025-08-17">August 17, 2025</time></p>
+            <p>
+                This week I focused on understanding semantic HTML tags and how they 
+                improve accessibility and structure. I also explored basic form 
+                elements and table attributes in depth.
+            </p>
+            <blockquote>
+                "Small consistent progress adds up to big results over time."
+            </blockquote>
+        </article>
+
+    </main>
+
+    <footer>
+        <p>Written by Aditya Narayan Rai</p>
+    </footer>
+
+</body>
+</html>
