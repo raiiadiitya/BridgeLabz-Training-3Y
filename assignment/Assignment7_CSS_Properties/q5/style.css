@@ -1,0 +1,26 @@
+* { box-sizing: border-box; }
+body { font-family: Arial, sans-serif; background: #fafafa; padding: 2rem; }
+.wrap { max-width: 700px; margin: 0 auto; }
+section { margin-bottom: 2rem; }
+
+/* Attribute selectors */
+input[type="text"] { border: 2px solid #4f46e5; padding: 0.5rem; margin-right: 0.5rem; }
+input[type="email"] { border: 2px solid #16a34a; padding: 0.5rem; }
+a[href^="https"] { color: #16a34a; font-weight: bold; } /* starts-with selector */
+a[href^="http://"] { color: #ef4444; }
+
+/* Pseudo-classes */
+.item-list li:hover { background: #e0e7ff; }
+.item-list li:nth-child(odd) { background: #f3f4f6; }
+.item-list li:nth-child(even) { background: #fff; }
+input:focus { outline: 3px solid #f59e0b; }
+
+/* Combinators */
+.attr-demo > input { border-radius: 6px; }      /* direct child */
+.attr-demo input + input { margin-left: 0.5rem; } /* adjacent sibling */
+.list-demo h2 ~ ul { border-top: 2px solid #ddd; padding-top: 0.5rem; } /* general sibling */
+section p a { text-decoration: none; }           /* descendant */
+
+/* Pseudo-elements */
+.quote::before { content: "\201C"; font-size: 1.4rem; color: #4f46e5; }
+.quote::after { content: "\201D"; font-size: 1.4rem; color: #4f46e5; }

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Box Model Exploration</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="wrap">
+    <h1>Box Model Exploration</h1>
+    <div class="demo">
+      <div class="margin-layer">
+        margin
+        <div class="border-layer">
+          border
+          <div class="padding-layer">
+            padding
+            <div class="content-layer">content</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="note">
+      content-box (default) counts padding and border outside the set width, while
+      box-sizing: border-box (used above) includes them inside it, keeping the
+      total size predictable.
+    </p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,42 @@
+* { box-sizing: border-box; }
+body { font-family: Arial, sans-serif; background: #f3f4f6; margin: 0; }
+
+.form-wrap {
+  max-width: 400px;
+  margin: 3rem auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+form { display: flex; flex-direction: column; gap: 0.9rem; }
+
+label { font-weight: bold; font-size: 0.9rem; }
+
+input, textarea {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+/* Different outline styles */
+.solid-outline  { outline: 2px solid transparent; outline-offset: 2px; }
+.dotted-outline { outline: 2px dotted transparent; outline-offset: 3px; }
+.dashed-outline { outline: 2px dashed transparent; outline-offset: 4px; }
+
+/* Change outline color on focus */
+.solid-outline:focus  { outline-color: #4f46e5; }
+.dotted-outline:focus { outline-color: #16a34a; }
+.dashed-outline:focus { outline-color: #f59e0b; }
+
+button {
+  padding: 0.7rem;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+button:focus { outline: 2px solid #111827; outline-offset: 2px; }

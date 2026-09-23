@@ -1,0 +1,32 @@
+* { box-sizing: border-box; }
+body { font-family: Arial, sans-serif; background: #f3f4f6; margin: 0; }
+
+h3 {
+  text-shadow: 1px 2px 3px rgba(0,0,0,0.25); /* text-shadow for headings */
+}
+
+/* Flexbox row for a single line of cards */
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 3rem 2rem;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  width: 220px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card1 { box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+.card2 { box-shadow: 6px 6px 10px rgba(0,0,0,0.2); }
+.card3 { box-shadow: 0 10px 25px rgba(0,0,0,0.25); }
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 35px rgba(0,0,0,0.3);
+}

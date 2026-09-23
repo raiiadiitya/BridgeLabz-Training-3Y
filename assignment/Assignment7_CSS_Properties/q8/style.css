@@ -1,0 +1,34 @@
+* { box-sizing: border-box; } /* border-box makes width include padding + border */
+body { font-family: Arial, sans-serif; background: #f5f6fa; margin: 0; }
+
+.wrap { display: flex; flex-direction: column; align-items: center; padding: 2rem; text-align: center; }
+
+.demo { margin: 2rem 0; }
+
+.margin-layer {
+  background: #fde68a; /* represents margin area */
+  padding: 24px;
+  outline: 2px dashed #b45309;
+  font-size: 0.8rem;
+}
+.border-layer {
+  background: #93c5fd; /* represents border area */
+  border: 8px solid #1d4ed8;
+  padding: 4px;
+  font-size: 0.8rem;
+}
+.padding-layer {
+  background: #86efac; /* represents padding area */
+  padding: 20px;
+  font-size: 0.8rem;
+}
+.content-layer {
+  background: #fff;
+  color: #111;
+  padding: 16px;
+  width: 140px;
+  border: 1px solid #999;
+  font-weight: bold;
+}
+
+.note { max-width: 500px; color: #444; }

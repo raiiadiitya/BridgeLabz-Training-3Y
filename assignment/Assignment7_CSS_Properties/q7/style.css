@@ -1,0 +1,46 @@
+* { box-sizing: border-box; }
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: #fdfdfb;
+  color: #222;
+  padding: 2rem;
+}
+
+.article { max-width: 650px; margin: 0 auto; }
+
+h1 {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 700;
+  font-size: 2.2rem;
+  letter-spacing: 0.5px;
+}
+
+.lead {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  letter-spacing: 0.2px;
+  text-align: left;
+}
+
+.body-text {
+  font-size: 1rem;
+  line-height: 1.8;
+  letter-spacing: 0.3px;
+  text-align: justify;
+}
+
+/* First-letter and first-line pseudo-elements for emphasis */
+.body-text::first-letter {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #4f46e5;
+  float: left;
+  margin-right: 0.3rem;
+}
+.body-text::first-line {
+  font-weight: bold;
+}
+
+mark   { background: #fde68a; color: #111; padding: 0 2px; }
+strong { color: #b91c1c; }
+em     { color: #16a34a; }
