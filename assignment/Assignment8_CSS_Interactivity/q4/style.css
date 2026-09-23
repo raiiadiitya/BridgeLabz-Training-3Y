@@ -1,0 +1,31 @@
+* { box-sizing: border-box; }
+body { font-family: Arial, sans-serif; background: #fafafa; margin: 0; padding: 0 2rem; }
+header, footer { text-align: center; padding: 1rem; background: #111827; color: #fff; margin: 0 -2rem; }
+
+.wrap { padding: 2rem 0; }
+
+/* Element selector: targets all <p> by default */
+p { line-height: 1.6; margin-bottom: 0.8rem; }
+
+/* ID selector */
+#intro { color: #4f46e5; font-weight: bold; }
+
+/* Class selector */
+.highlight { background: #fde68a; padding: 0.3rem; }
+
+/* Attribute selector */
+a[href^="https"] { color: #16a34a; }
+
+/* Descendant combinator: any li inside .menu */
+.menu li { padding: 0.3rem 0; }
+
+/* Child combinator: direct <p> children of .card */
+.card > p { color: #444; }
+
+/* Adjacent sibling combinator: h2 immediately followed by p */
+.card h2 + p { font-style: italic; }
+
+/* General sibling combinator: any p after h2 within the same parent */
+.card h2 ~ a { display: inline-block; margin-top: 0.5rem; }
+
+.card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-top: 1rem; }

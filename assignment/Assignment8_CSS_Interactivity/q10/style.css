@@ -1,0 +1,57 @@
+* { box-sizing: border-box; }
+body { font-family: Arial, sans-serif; margin: 0; display: flex; flex-direction: column; min-height: 100vh; }
+
+.app-header, .app-footer {
+  background: #111827;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+}
+
+.page {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background: #f3f4f6;
+}
+
+.card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  padding: 2rem;
+  width: 320px;
+  text-align: center;
+}
+
+.avatar { border-radius: 50%; margin-bottom: 0.8rem; }
+
+.ui-form { display: flex; flex-direction: column; gap: 0.9rem; margin-top: 1rem; }
+
+.ui-form input {
+  padding: 0.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+.ui-form input:focus { outline: none; border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.2); }
+
+.btn-group { display: flex; gap: 0.8rem; }
+
+.save-btn, .cancel-btn {
+  flex: 1;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.save-btn { background: #4f46e5; color: #fff; }
+.save-btn:hover { background: #4338ca; }
+.cancel-btn { background: #e5e7eb; color: #111827; }
+.cancel-btn:hover { background: #d1d5db; }
+
+@media (max-width: 400px) {
+  .card { width: 100%; }
+}

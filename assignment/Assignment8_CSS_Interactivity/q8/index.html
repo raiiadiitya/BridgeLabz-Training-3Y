@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Box-Sizing Comparison</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="wrap">
+    <h1>Box-Sizing Comparison</h1>
+    <div class="row">
+      <div class="box content-box">
+        <h3>content-box (default)</h3>
+        <p>width: 200px + padding adds to total size</p>
+      </div>
+      <div class="box border-box">
+        <h3>border-box</h3>
+        <p>width: 200px includes padding &amp; border</p>
+      </div>
+    </div>
+    <p class="note">
+      Both boxes are set to width: 200px with the same padding and border, but the
+      content-box model renders wider overall, while border-box keeps the total
+      width fixed at 200px.
+    </p>
+  </main>
+</body>
+</html>

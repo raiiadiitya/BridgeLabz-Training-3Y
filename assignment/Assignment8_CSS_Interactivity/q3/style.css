@@ -1,0 +1,30 @@
+* { box-sizing: border-box; }
+body { font-family: Arial, sans-serif; background: #fafafa; margin: 0; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+  padding: 2rem;
+}
+
+figure { margin: 0; text-align: center; }
+
+.img-wrap { position: relative; overflow: hidden; border-radius: 10px; box-shadow: 0 3px 8px rgba(0,0,0,0.15); }
+.img-wrap img { width: 100%; display: block; transition: transform 0.4s ease; }
+.img-wrap:hover img { transform: scale(1.1); }
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.img-wrap:hover .overlay { opacity: 1; }
+
+figcaption { margin-top: 0.4rem; font-size: 0.9rem; }
+
+@media (max-width: 700px) {
+  .grid { grid-template-columns: 1fr; }
+}
