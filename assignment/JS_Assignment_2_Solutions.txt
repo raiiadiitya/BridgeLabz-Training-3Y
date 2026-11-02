@@ -1,0 +1,312 @@
+=====================================================================
+ JAVASCRIPT ASSIGNMENT 2 - SOLUTIONS
+ (Each question is a separate program - save each as q1.js, q2.js ...
+  and run with: node q1.js  or paste into the browser console)
+=====================================================================
+
+
+---------------------------------------------------------------------
+Q1. Scope Conflict Resolver   (q1.js)
+---------------------------------------------------------------------
+// Global variable - accessible everywhere in the program
+let bonus = 5000;
+
+function calculateSalary(isPermanent) {
+  // Local variable - exists only inside this function
+  let salary = 40000;
+
+  // Add the global bonus only for permanent employees
+  if (isPermanent) {
+    salary += bonus;
+  }
+
+  console.log(`isPermanent = ${isPermanent} -> Total salary: ${salary}`);
+}
+
+// Demonstration: changing isPermanent changes only the local result
+calculateSalary(true);    // 45000 (bonus added)
+calculateSalary(false);   // 40000 (bonus not added)
+
+// The global variable is NOT changed by either call
+console.log("Global bonus after calls:", bonus);   // still 5000
+
+// The local variable is not accessible outside the function
+console.log("Is salary accessible outside?", typeof salary);  // "undefined"
+
+
+---------------------------------------------------------------------
+Q2. String Manipulation Report   (q2.js)
+---------------------------------------------------------------------
+// Original product name with extra spaces and mixed case
+const productName = "  wireless headphones PRO  ";
+
+// Step 1: trim spaces and convert to lowercase
+const cleaned = productName.trim().toLowerCase();   // "wireless headphones pro"
+
+// Step 2: capitalize the first letter of each word
+const capitalized = cleaned
+  .split(" ")                                          // split into words
+  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+  .join(" ");                                          // "Wireless Headphones Pro"
+
+// Step 3: replace "Pro" with "Pro Edition"
+// (the word is "Pro" now because it was capitalized in Step 2)
+const finalTitle = capitalized.replace("Pro", "Pro Edition");
+
+// Display the cleaned title and its length
+console.log("Cleaned Title:", finalTitle);
+console.log("Length:", finalTitle.length);
+
+
+---------------------------------------------------------------------
+Q3. Math Utility Dashboard   (q3.js)
+---------------------------------------------------------------------
+const x = 16.75;
+
+const rounded = Math.round(x);                         // nearest integer
+const squareRoot = Math.sqrt(x);                       // square root
+const power = Math.pow(x, 3);                          // x cubed
+const randomNum = Math.floor(Math.random() * 41) + 10; // random 10-50
+
+// Formatted summary using template literals
+console.log(`
+===== Math Dashboard =====
+Number          : ${x}
+Rounded Value   : ${rounded}
+Square Root     : ${squareRoot.toFixed(2)}
+Power (x^3)     : ${power.toFixed(2)}
+Random (10-50)  : ${randomNum}
+==========================
+`);
+
+
+---------------------------------------------------------------------
+Q4. Array Performance Analyzer   (q4.js)
+---------------------------------------------------------------------
+// Create an array of 8 random scores between 30 and 100
+const scores = Array.from({ length: 8 }, () =>
+  Math.floor(Math.random() * 71) + 30
+);
+
+// Highest and lowest scores using spread operator
+const highest = Math.max(...scores);
+const lowest = Math.min(...scores);
+
+// Average score using reduce()
+const total = scores.reduce((sum, score) => sum + score, 0);
+const average = total / scores.length;
+
+// Students who passed (score >= 50) using filter()
+const passedStudents = scores.filter(score => score >= 50);
+
+// Pass/Fail labels using map()
+const status = scores.map(score => (score >= 50 ? "Pass" : "Fail"));
+
+// Formatted summary
+console.log("Scores        :", scores.join(", "));
+console.log("Status        :", status.join(", "));
+console.log("Highest Score :", highest);
+console.log("Lowest Score  :", lowest);
+console.log("Average Score :", average.toFixed(2));
+console.log("Passed        :", passedStudents.length, "out of", scores.length);
+
+
+---------------------------------------------------------------------
+Q5. Boolean Logic Access System   (q5.js)
+---------------------------------------------------------------------
+// Function to check the security status for given conditions
+function checkSecurity(isDoorLocked, isWindowClosed, isAlarmOn, isOwnerInside) {
+  // Access is granted only if alarm is on, door and window are closed,
+  // and the owner is inside.
+  // Here "door closed" is represented by isDoorLocked.
+  if (isAlarmOn && isDoorLocked && isWindowClosed && isOwnerInside) {
+    return "Secure";
+  } else {
+    return "Unsafe";
+  }
+}
+
+// Test multiple outcomes
+console.log("Test 1:", checkSecurity(true, true, true, true));     // Secure
+console.log("Test 2:", checkSecurity(true, true, false, true));    // Unsafe (alarm off)
+console.log("Test 3:", checkSecurity(false, true, true, true));    // Unsafe (door unlocked)
+console.log("Test 4:", checkSecurity(true, false, true, true));    // Unsafe (window open)
+console.log("Test 5:", checkSecurity(true, true, true, false));    // Unsafe (owner not inside)
+
+// Example using ! and || : unsafe if ANY condition fails
+const isDoorLocked = true, isWindowClosed = true, isAlarmOn = true, isOwnerInside = false;
+const unsafe = !isAlarmOn || !isDoorLocked || !isWindowClosed || !isOwnerInside;
+console.log("Test 6 (using ! and ||):", unsafe ? "Unsafe" : "Secure");
+
+
+---------------------------------------------------------------------
+Q6. Event-Based Counter Simulation   (q6.js)
+---------------------------------------------------------------------
+// Counter variable shared by the functions (outer scope)
+let count = 0;
+
+// Increase the counter by 1
+function increment() {
+  count++;
+  console.log("Incremented. Count =", count);
+}
+
+// Decrease the counter by 1
+function decrement() {
+  count--;
+  console.log("Decremented. Count =", count);
+}
+
+// Simulate click events by calling the functions manually
+console.log("Initial count:", count);
+increment();   // click on "+"
+increment();   // click on "+"
+decrement();   // click on "-"
+increment();   // click on "+"
+
+// Nested function to show function scope of count updates
+function counterWithNested() {
+  let localCount = 0;              // belongs to the outer function
+
+  function updateCount(change) {   // inner function can access localCount
+    localCount += change;
+    console.log("Nested update. localCount =", localCount);
+  }
+
+  updateCount(1);
+  updateCount(1);
+  updateCount(-1);
+}
+
+counterWithNested();
+
+
+---------------------------------------------------------------------
+Q7. Customer Feedback Processor   (q7.js)
+---------------------------------------------------------------------
+const feedback = "Great product! Fast delivery and amazing sound quality!";
+
+// Count words by splitting on spaces
+const wordCount = feedback.split(" ").length;
+
+// Convert to lowercase so the check is case-insensitive
+const lowerFeedback = feedback.toLowerCase();
+
+console.log("Feedback  :", feedback);
+console.log("Word Count:", wordCount);
+
+// Check for negative words using includes()
+if (lowerFeedback.includes("bad") || lowerFeedback.includes("poor")) {
+  console.log("Needs Improvement");
+} else {
+  console.log("Positive Feedback");
+}
+
+
+---------------------------------------------------------------------
+Q8. Dynamic Discount Evaluator   (q8.js)
+---------------------------------------------------------------------
+const cart = [
+  { item: "Laptop", category: "electronics", price: 45000 },
+  { item: "Shoes", category: "fashion", price: 2500 },
+  { item: "Book", category: "education", price: 600 }
+];
+
+// Step 1: apply category discount to each item using a loop
+const discountedPrices = [];
+
+for (const product of cart) {
+  let price = product.price;
+
+  if (product.category === "electronics") {
+    price -= price * 0.10;       // 10% off
+  } else if (product.category === "fashion") {
+    price -= price * 0.05;       // 5% off
+  }
+  // other categories: no discount
+
+  discountedPrices.push(price);
+  console.log(`${product.item}: ${product.price} -> ${price}`);
+}
+
+// Step 2: calculate totals using reduce()
+const originalTotal = cart.reduce((sum, product) => sum + product.price, 0);
+let finalTotal = discountedPrices.reduce((sum, price) => sum + price, 0);
+
+// Step 3: extra 5% overall discount if the cart value is more than 50000
+// (checked on the original cart total)
+if (originalTotal > 50000) {
+  finalTotal -= finalTotal * 0.05;
+  console.log("Extra 5% overall discount applied.");
+}
+
+console.log("Original Total:", originalTotal);
+console.log("Final Total   :", finalTotal.toFixed(2));
+
+
+---------------------------------------------------------------------
+Q9. Odd-Even Number Analyzer   (q9.js)
+---------------------------------------------------------------------
+// Fill an array with numbers 1 to 30 using a loop
+const numbers = [];
+for (let i = 1; i <= 30; i++) {
+  numbers.push(i);
+}
+
+// Array to store the result for each number
+const results = [];
+
+for (const num of numbers) {
+  if (num % 3 === 0 && num % 5 === 0) {
+    results.push("FizzBuzz");     // divisible by both 3 and 5
+  } else if (num % 2 === 0) {
+    results.push("Even");
+  } else {
+    results.push("Odd");
+  }
+}
+
+// Display the results array
+console.log(results);
+
+// Optional: number with its result
+numbers.forEach((num, index) => console.log(`${num}: ${results[index]}`));
+
+
+---------------------------------------------------------------------
+Q10. Departmental Employee Evaluator   (q10.js)
+---------------------------------------------------------------------
+const departments = [
+  ["HR", 72],
+  ["Finance", 88],
+  ["Tech", 95],
+  ["Support", 63]
+];
+
+// Loop through each department [name, score]
+for (let i = 0; i < departments.length; i++) {
+  const name = departments[i][0];
+  const score = departments[i][1];
+  let rating;
+
+  if (score >= 75) {
+    // Nested if-else for the higher range
+    if (score >= 90) {
+      rating = "Excellent";
+    } else {
+      rating = "Good";               // 75 - 89
+    }
+  } else {
+    if (score >= 60) {
+      rating = "Average";            // 60 - 74
+    } else {
+      rating = "Needs Improvement";
+    }
+  }
+
+  console.log(`${name} (${score}): ${rating}`);
+}
+
+=====================================================================
+ END OF SOLUTIONS
+=====================================================================
