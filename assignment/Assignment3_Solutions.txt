@@ -1,0 +1,512 @@
+=====================================================================
+ASSIGNMENT 3 - JavaScript ES Features - SOLUTIONS
+=====================================================================
+Each question below is a separate file. Save the code as q1.js, q2.js ...
+and run with:  node q1.js
+(Breakpoints / watch / call stack: VS Code -> open file -> click left of a
+line number to set a breakpoint -> press F5 -> use the WATCH and CALL STACK
+panels. Step with F10 (step over) / F11 (step into).)
+=====================================================================
+
+
+=====================================================================
+Q1 - Dynamic Data Parser          (q1.js)
+=====================================================================
+"use strict";
+
+const apiData = ["25", "true", "false", "NaN", " ", "100px", "3.14", null, undefined];
+
+const validNumbers = [];    // values that convert to a real number
+const invalidNumbers = [];  // values that must be skipped (but logged)
+
+for (let i = 0; i < apiData.length; i++) {
+  const value = apiData[i];
+
+  // Three conversions of the same value
+  const asNumber  = Number(value);
+  const asBoolean = Boolean(value);
+  const asString  = String(value);
+
+  // Debug observations:
+  //  Number(" ")       -> 0   (whitespace string becomes 0, a trap!)
+  //  Number(null)      -> 0   (null becomes 0)
+  //  Number(undefined) -> NaN
+  //  Number("100px")   -> NaN
+  //  Boolean("false")  -> true (any non-empty string is truthy)
+  //  Boolean(" ")      -> true
+  // So we cannot trust Number() alone: check blank strings / null / undefined too.
+  const isBlank   = typeof value === "string" && value.trim() === "";
+  const isMissing = value === null || value === undefined;
+  const isInvalid = isMissing || isBlank || Number.isNaN(asNumber);
+
+  if (isInvalid) {
+    invalidNumbers.push({ index: i, raw: value });
+    console.log(`[SKIPPED] index ${i}: raw=${JSON.stringify(value)} -> Number=${asNumber}, Boolean=${asBoolean}, String="${asString}"`);
+    continue; // skip invalid numbers
+  }
+
+  validNumbers.push(asNumber);
+  console.log(`[OK]      index ${i}: raw=${JSON.stringify(value)} -> Number=${asNumber}, Boolean=${asBoolean}, String="${asString}"`);
+}
+
+console.log("\n===== REPORT =====");
+console.log("Total items     :", apiData.length);
+console.log("Valid count     :", validNumbers.length);
+console.log("Invalid count   :", invalidNumbers.length);
+console.log("Valid numbers   :", validNumbers);
+console.log("Invalid entries :", invalidNumbers);
+
+// Conditional formatting of the final report
+for (const n of validNumbers) {
+  const label = n >= 100 ? "HIGH" : n >= 10 ? "MEDIUM" : "LOW";
+  console.log(`${n} -> ${label}`);
+}
+
+
+=====================================================================
+Q2 - Employee Bonus Calculator     (q2.js)
+=====================================================================
+"use strict";
+
+const employees = [
+  { name: "Amit",  salary: "45000", years: "5" },
+  { name: "Sara",  salary: "38000", years: "2" },
+  { name: "Kiran", salary: "52000", years: "7" }
+];
+
+// "use strict" -> every variable below is declared (const/let),
+// so no implicit globals can be created by mistake.
+function calculateBonus(emp) {
+  if (!("salary" in emp) || !("years" in emp)) {
+    throw new Error(`Missing property in employee record: ${emp.name}`);
+  }
+
+  const salary = Number(emp.salary);
+  const years  = Number(emp.years);
+
+  if (Number.isNaN(salary) || Number.isNaN(years)) {
+    throw new TypeError(`Conversion failed for ${emp.name}`);
+  }
+
+  const bonus = years > 3 ? salary * 0.1 : salary * 0.05;
+  return { name: emp.name, salary, years, bonus };
+}
+
+// extra test data to show try...catch working
+const testList = [...employees, { name: "Ravi", salary: "abc", years: "4" }, { name: "Neha" }];
+
+for (const emp of testList) {
+  try {
+    const r = calculateBonus(emp);
+    console.log(`Employee: ${r.name} | Salary: ${r.salary.toFixed(2)} | Years: ${r.years} | Bonus: ${r.bonus.toFixed(2)} | Total: ${(r.salary + r.bonus).toFixed(2)}`);
+  } catch (err) {
+    console.log(`Error (${err.name}): ${err.message}`);
+  }
+}
+
+
+=====================================================================
+Q3 - Transaction Validator         (q3.js)
+=====================================================================
+"use strict";
+
+class NegativeAmountError extends Error {
+  constructor(msg) { super(msg); this.name = "NegativeAmountError"; }
+}
+class MissingFieldError extends Error {
+  constructor(msg) { super(msg); this.name = "MissingFieldError"; }
+}
+class NullEntryError extends Error {
+  constructor(msg) { super(msg); this.name = "NullEntryError"; }
+}
+
+const transactions = [
+  { id: 1, amount: 2000 },
+  { id: 2, amount: -500 },
+  { id: 3 },
+  null
+];
+
+function validate(tx, index) {
+  if (tx === null) throw new NullEntryError(`Entry at index ${index} is null`);
+  if (tx.id === undefined || tx.amount === undefined)
+    throw new MissingFieldError(`Entry at index ${index} is missing id or amount`);
+  if (tx.amount < 0)
+    throw new NegativeAmountError(`Transaction ${tx.id} has negative amount ${tx.amount}`);
+  return tx;
+}
+
+const valid = [];
+const invalid = { NegativeAmountError: [], MissingFieldError: [], NullEntryError: [] };
+
+for (let i = 0; i < transactions.length; i++) {
+  try {
+    // BREAKPOINT: set a breakpoint on the next line (or use the debugger
+    // statement) and add i, transactions[i], valid, invalid to WATCH.
+    debugger;
+    valid.push(validate(transactions[i], i));
+  } catch (err) {
+    if (invalid[err.name]) invalid[err.name].push(err.message);
+    else console.log("Unexpected error:", err);
+  }
+}
+
+const failedCount = Object.values(invalid).reduce((sum, arr) => sum + arr.length, 0);
+console.log("===== FINAL REPORT =====");
+console.log("Successful:", valid.length, valid);
+console.log("Failed    :", failedCount);
+console.log("By type   :", invalid);
+
+
+=====================================================================
+Q4 - Debugging Mystery             (q4.js)
+=====================================================================
+// 1) WHY IT THROWS:
+//    In strict mode, assigning to a variable that was never declared
+//    (greeting = "Welcome") is NOT allowed. In sloppy mode JS would silently
+//    create a global variable (window/globalThis.greeting).
+//    Strict mode throws:  ReferenceError: greeting is not defined
+
+"use strict";
+function showMessageBroken() {
+  greeting = "Welcome";   // ReferenceError in strict mode
+  console.log(greeting);
+}
+// showMessageBroken();   // uncomment to see the error
+
+// 2) FIX: declare it (let/const) so it has a proper scope.
+function showMessage() {
+  const greeting = "Welcome"; // function-scoped (local) now
+  console.log(greeting);
+}
+showMessage();
+// console.log(typeof greeting); // "undefined" -> no longer leaks to global
+
+// How scope rules changed behaviour:
+//  - Before: undeclared assignment leaked into global scope (hard-to-find bugs).
+//  - After : variable lives only inside showMessage(); outside code can't touch it.
+
+// 3) DEBUGGER (VS Code):
+//  - Put a breakpoint on console.log(greeting).
+//  - WATCH panel: add `greeting`.
+//  - CALL STACK shows:  showMessage  <-  (anonymous) / Module._compile (global code).
+//  - Before the fix execution stops at the assignment with the ReferenceError.
+
+
+=====================================================================
+Q5 - Hoisting Lab: The Sequence Trap     (q5.js)
+=====================================================================
+// ORIGINAL CODE
+// console.log(score);          // undefined
+// announce();                  // "Game started"
+// var score = 50;
+// function announce() { console.log("Game started"); }
+// let status = "ready";
+// startGame();                 // "ready"
+// function startGame() { console.log(status); }
+
+// PREDICTED OUTPUT:
+//   undefined
+//   Game started
+//   ready
+
+// 1) MEMORY STATE OF EACH HOISTED ELEMENT (creation phase)
+//  score      (var)      : hoisted, initialised to undefined  -> readable early, value undefined
+//  announce   (function) : fully hoisted with its body         -> callable before the declaration
+//  status     (let)      : hoisted but in Temporal Dead Zone   -> reading before the line = ReferenceError
+//  startGame  (function) : fully hoisted with its body
+//  Here startGame() is called AFTER `let status = "ready"`, so TDZ has ended and it prints "ready".
+//  (If startGame() were called above the let line, it would throw ReferenceError.)
+
+// 2) FIXED VERSION (declare first, use after)
+"use strict";
+var score = 50;
+function announce() { console.log("Game started"); }
+let status = "ready";
+function startGame() { console.log(status); }
+
+console.log(score);   // 50
+announce();           // Game started
+startGame();          // ready
+
+// 3) ARROW FUNCTION VERSION - hoisting differences
+// Arrow functions are values stored in variables, so they follow variable hoisting.
+try {
+  announceArrow();                       // const -> TDZ
+} catch (e) { console.log(e.name + ": " + e.message); } // ReferenceError: Cannot access 'announceArrow' before initialization
+const announceArrow = () => console.log("Game started (arrow)");
+announceArrow();                         // works after definition
+
+try {
+  startArrow();                          // var -> hoisted as undefined
+} catch (e) { console.log(e.name + ": " + e.message); } // TypeError: startArrow is not a function
+var startArrow = () => console.log(status);
+startArrow();                            // ready
+
+// Summary:  function declaration -> fully hoisted
+//           var arrow            -> TypeError (undefined is not a function)
+//           let/const arrow      -> ReferenceError (TDZ)
+
+
+=====================================================================
+Q6 - Pyramid Pattern Generator     (q6.js)
+=====================================================================
+"use strict";
+
+// 3) User input via command line: node q6.js 6   (default = 5)
+const arg = Number(process.argv[2]);
+const rows = Number.isInteger(arg) && arg > 0 ? arg : 5;
+
+// Pattern
+for (let i = 1; i <= rows; i++) {
+  let line = "";
+  for (let j = 1; j <= i; j++) {
+    line += "* ";
+  }
+  console.log(line.trim());
+}
+
+// 1) let -> var observation
+//  Output of the pattern is IDENTICAL, but scope differs:
+//   - let : i and j exist only inside their loops (block scope)
+//   - var : i and j are function/global scoped and still exist after the loop
+function withVar(n) {
+  for (var i = 1; i <= n; i++) {
+    for (var j = 1; j <= i; j++) { /* same pattern */ }
+  }
+  console.log("After loops (var) -> i =", i, ", j =", j); // i = n+1, j = n+1? (j = n+1 from last inner loop = n+1)
+}
+withVar(4);
+// With let, `console.log(i)` after the loop would throw ReferenceError.
+// var also breaks closures: setTimeout(() => console.log(i)) inside a var loop
+// prints the final value for every callback, let creates a new i per iteration.
+
+// 2) DEBUG: put a breakpoint inside the inner loop. WATCH i, j, line.
+//    Observe: j resets to 1 every outer iteration; `line` is re-created each row.
+//    With var, the same i/j memory slot is re-used for the whole function.
+
+// 4) Strict mode catches undeclared loop variables:
+try {
+  eval('"use strict"; for (k = 0; k < 3; k++) {}');
+} catch (e) { console.log(e.name + ": " + e.message); } // ReferenceError: k is not defined
+
+
+=====================================================================
+Q7 - Smart Calculator              (q7.js)
+=====================================================================
+"use strict";
+
+class DivideByZeroError extends Error {
+  constructor(msg) { super(msg); this.name = "DivideByZeroError"; }
+}
+class NegativeRootError extends Error {
+  constructor(msg) { super(msg); this.name = "NegativeRootError"; }
+}
+class InvalidOperationError extends Error {
+  constructor(msg) { super(msg); this.name = "InvalidOperationError"; }
+}
+
+const operations = ["add", "divide", "power", "root", "subtract"];
+const num1 = 25, num2 = 0;
+
+function calculate(op, a, b) {
+  switch (op) {
+    case "add":
+      return a + b;
+    case "subtract":
+      return a - b;
+    case "divide":
+      if (b === 0) throw new DivideByZeroError("Cannot divide by zero");
+      return a / b;
+    case "power":
+      return Math.pow(a, b);
+    case "root":
+      if (a < 0) throw new NegativeRootError("Cannot take root of a negative number");
+      return Math.sqrt(a);
+    default:
+      throw new InvalidOperationError(`Operation "${op}" is not recognized`);
+  }
+}
+
+console.log("===== CALCULATOR SUMMARY =====");
+console.log(`num1 = ${num1}, num2 = ${num2}`);
+
+for (const op of [...operations, "modulo"]) {   // "modulo" shows InvalidOperationError
+  try {
+    const result = calculate(op, num1, num2);
+    console.log(`${op.padEnd(10)} : ${result}`);
+  } catch (err) {
+    console.log(`${op.padEnd(10)} : ERROR -> ${err.name}: ${err.message}`);
+  }
+}
+// Test negative root:
+try { calculate("root", -4, 0); } catch (e) { console.log("root(-4): " + e.name); }
+
+
+=====================================================================
+Q8 - Strict Mode Showdown          (q8.js)
+=====================================================================
+// function demo(a, a) {
+//   total = 10;
+//   delete total;
+// }
+// demo(5, 10);
+
+// 1 & 2) RUN WITHOUT "use strict" (sloppy mode) - works with no error:
+//   - duplicate parameter a is allowed; the LAST one wins, so a = 10
+//   - total = 10 creates an implicit GLOBAL variable
+//   - delete total succeeds (returns true) because implicit globals are deletable
+//
+//   RUN WITH "use strict" - three things become illegal:
+//   - function demo(a, a)  -> SyntaxError: Duplicate parameter name not allowed in this context
+//   - total = 10           -> ReferenceError: total is not defined
+//   - delete total         -> SyntaxError: Delete of an unqualified identifier in strict mode
+//   (SyntaxErrors are detected at PARSE time, so the program does not run at all.)
+
+// Demonstration inside one file using Function constructor + try/catch:
+const sloppy = `
+  function demo(a, a) { total = 10; delete total; return a; }
+  return demo(5, 10);
+`;
+console.log("Sloppy result:", new Function(sloppy)()); // 10 (last 'a' wins)
+
+const strictDup = '"use strict"; function demo(a, a) {}';
+const strictDel = '"use strict"; var total = 1; delete total;';
+const strictUndeclared = '"use strict"; total = 10;';
+for (const code of [strictDup, strictDel, strictUndeclared]) {
+  try { new Function(code)(); console.log("no error"); }
+  catch (e) { console.log(e.name + ": " + e.message); }
+}
+
+// 3) WHY STRICT MODE BANS THEM
+//  - Duplicate params: ambiguous, hides bugs (which 'a' did you mean?).
+//  - Implicit globals: a typo silently creates a global and pollutes scope.
+//  - delete on a variable: variables are not meant to be deleted; only object
+//    properties can be (delete obj.prop). Prevents confusing/engine-unfriendly behaviour.
+
+// 4) CORRECT ES6 VERSION
+"use strict";
+function demoFixed(a, b) {
+  let total = 10;          // declared -> no global leak
+  total = a + b + total;   // use values instead of delete
+  return total;
+}
+console.log("Fixed result:", demoFixed(5, 10)); // 25
+const obj = { total: 10 };
+delete obj.total;           // delete is legal on object properties
+console.log(obj);           // {}
+
+
+=====================================================================
+Q9 - JSON Audit                    (q9.js)
+=====================================================================
+"use strict";
+
+const rawData = [
+  '{"user":"Alex","age":25}',
+  '{"id":2}',
+  '{invalid}',
+  '{"user":"Mina","age":"22"}'
+];
+
+const cleanData = [];
+const errors = [];
+
+for (let i = 0; i < rawData.length; i++) {
+  const lineNo = i + 1;
+  try {
+    const obj = JSON.parse(rawData[i]);   // throws SyntaxError on invalid JSON
+
+    // Detect missing keys
+    const missing = ["user", "age"].filter(key => !(key in obj));
+    if (missing.length > 0) {
+      throw new Error(`Missing key(s): ${missing.join(", ")}`);
+    }
+    cleanData.push(obj);
+  } catch (err) {
+    // Control flow on error: execution jumps from the throwing line straight to
+    // this catch block (the push above is skipped), then the loop continues.
+    const kind = err instanceof SyntaxError ? "Invalid JSON" : "Validation";
+    errors.push({ line: lineNo, type: kind, message: err.message });
+    console.log(`Line ${lineNo}: [${kind}] ${err.message}`);
+  }
+}
+
+// Debug: breakpoint on JSON.parse; step with F10. On line 3 the debugger jumps
+// into the catch block, skipping the missing-key check and cleanData.push.
+
+// BONUS: convert age to Number and filter under-18 users
+const normalised = cleanData.map(u => ({ user: u.user, age: Number(u.age) }));
+const adults = normalised.filter(u => u.age >= 18);
+const minors = normalised.filter(u => u.age < 18);
+
+console.log("\nClean entries :", normalised);
+console.log("Adults (18+)  :", adults);
+console.log("Under 18      :", minors);
+console.log("Errors        :", errors);
+
+
+=====================================================================
+Q10 - Nested Hoisting and Closures   (q10.js)
+=====================================================================
+function outer() {
+  console.log(count);   // undefined
+  var count = 5;
+  function inner() {
+    console.log(count); // undefined
+    var count = 10;
+  }
+  inner();
+}
+outer();
+
+// 1) PREDICTED OUTPUT
+//    undefined
+//    undefined
+//
+// Reason: both `count` variables are hoisted (declaration only, value undefined)
+// to the top of their OWN function. Assignments (5 and 10) happen later.
+
+// 2) SEPARATE MEMORY CONTEXTS
+//  outer() execution context : { count: undefined -> 5, inner: function }
+//  inner() execution context : { count: undefined -> 10 }
+//  inner's `var count` SHADOWS outer's count, so inner never reaches outer's
+//  value 5 through the scope chain. Each function call creates its own
+//  creation phase (hoisting) in its own context.
+//  Closure proof: remove `var count = 10` from inner and it prints 5
+//  (inner closes over outer's count).
+
+// 3) ARROW FUNCTION VERSION
+function outerArrow() {
+  console.log(count);        // undefined
+  var count = 5;
+  const inner = () => {
+    console.log(count);      // undefined (arrow body still has its own function scope)
+    var count = 10;
+  };
+  inner();                   // must be called AFTER the const line
+}
+outerArrow();
+// Changes/notes:
+//  - Hoisting of `var count` inside the arrow body is the same: undefined.
+//  - But `inner` itself is now a const -> TDZ: calling inner() before its
+//    declaration gives ReferenceError (the function declaration version
+//    could be called early).
+//  - Arrow has no own `this` / `arguments`.
+
+// 4) DEBUG SESSION & CALL STACK FLOW
+//  Breakpoints: line `console.log(count)` in outer and in inner.
+//  WATCH: count
+//  Flow:
+//   1. Global code runs outer()                -> stack: [outer, global]
+//   2. outer logs count (undefined), sets 5, calls inner()
+//                                              -> stack: [inner, outer, global]
+//   3. inner logs its own count (undefined), sets 10, returns
+//                                              -> stack: [outer, global]
+//   4. outer returns                           -> stack: [global]
+//  In the VARIABLES panel you will see two different `count` entries: one in
+//  the outer scope (5) and one in the inner Local scope (undefined -> 10).
+
+=====================================================================
+END
+=====================================================================
