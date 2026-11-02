@@ -1,0 +1,291 @@
+=====================================================================
+ JAVASCRIPT ASSIGNMENT 1 - SOLUTIONS
+ (Each question is a separate program - save each as q1.js, q2.js ...
+  and run with: node q1.js  or paste into the browser console)
+=====================================================================
+
+
+---------------------------------------------------------------------
+Q1. Personalized Login Greeting   (q1.js)
+---------------------------------------------------------------------
+// Variable for the user's name
+const userName = "Aditya";
+
+// Get the current hour (0-23) from the system clock
+const currentHour = new Date().getHours();
+
+// Variable to hold the greeting message
+let greeting;
+
+if (currentHour < 12) {
+  // Before 12 PM
+  greeting = `Good Morning ${userName}!`;
+} else if (currentHour >= 12 && currentHour <= 17) {
+  // Between 12 PM and 5 PM
+  greeting = `Good Afternoon ${userName}!`;
+} else {
+  // Everything else (after 5 PM)
+  greeting = `Good Evening ${userName}!`;
+}
+
+console.log(greeting);
+
+
+---------------------------------------------------------------------
+Q2. Multi-Type Data Summary   (q2.js)
+---------------------------------------------------------------------
+// Variables of different data types
+const name = "Aditya";                       // string
+const age = 21;                              // number
+const isStudent = true;                      // boolean
+const subjects = ["Maths", "JS", "DBMS"];    // array
+const profile = { city: "Mathura", year: 3 };// object
+const emptyValue = null;                     // null
+let notAssigned;                             // undefined
+
+// Helper: typeof returns "object" for arrays and null,
+// so we use Array.isArray() and a null check to be accurate.
+function getType(value) {
+  if (Array.isArray(value)) return "array";
+  if (value === null) return "null";
+  return typeof value;
+}
+
+// Build the report (label + value + type)
+const report = [
+  { Label: "name",       Value: name,       Type: getType(name) },
+  { Label: "age",        Value: age,        Type: getType(age) },
+  { Label: "isStudent",  Value: isStudent,  Type: getType(isStudent) },
+  { Label: "subjects",   Value: JSON.stringify(subjects), Type: getType(subjects) },
+  { Label: "profile",    Value: JSON.stringify(profile),  Type: getType(profile) },
+  { Label: "emptyValue", Value: emptyValue, Type: getType(emptyValue) },
+  { Label: "notAssigned",Value: notAssigned,Type: getType(notAssigned) }
+];
+
+// One single console.table() statement
+console.table(report);
+
+
+---------------------------------------------------------------------
+Q3. Monthly Expense Tracker   (q3.js)
+---------------------------------------------------------------------
+// Expenses for 5 categories: food, travel, rent, bills, leisure
+const expenses = [4500, 2000, 12000, 3000, 1500];
+
+// Calculate total using assignment operator (+=)
+let total = 0;
+for (let i = 0; i < expenses.length; i++) {
+  total += expenses[i];
+}
+
+// Average expense per category
+const average = total / expenses.length;
+
+// Add 10% tax using arithmetic and assignment operators
+let finalAmount = total;
+finalAmount += total * 0.10;   // finalAmount = finalAmount + 10% of total
+
+// Display results rounded to 2 decimals
+console.log("Total Expenses  : " + total.toFixed(2));
+console.log("Average Expense : " + average.toFixed(2));
+console.log("Final Amount (with 10% tax): " + finalAmount.toFixed(2));
+
+
+---------------------------------------------------------------------
+Q4. Academic Performance Evaluator   (q4.js)
+---------------------------------------------------------------------
+// Marks of 5 subjects (each out of 100)
+const marks = [78, 85, 92, 66, 88];
+
+// Calculate total
+let totalMarks = 0;
+for (const m of marks) {
+  totalMarks += m;
+}
+
+// Average and overall percentage
+const average = totalMarks / marks.length;
+const percentage = (totalMarks / (marks.length * 100)) * 100;
+
+// Validation: any subject below 35 -> automatically Detained
+let failedSubject = false;
+for (const m of marks) {
+  if (m < 35) {
+    failedSubject = true;
+    break;
+  }
+}
+
+console.log("Average    : " + average.toFixed(2));
+console.log("Percentage : " + percentage.toFixed(2) + "%");
+
+// Logical operators decide the result
+if (failedSubject || percentage < 50) {
+  console.log("Detained");
+} else if (!failedSubject && percentage >= 85) {
+  console.log("Promoted with Distinction");
+} else if (!failedSubject && percentage >= 50 && percentage < 85) {
+  console.log("Promoted");
+}
+
+
+---------------------------------------------------------------------
+Q5. Weather Activity Planner   (q5.js)
+---------------------------------------------------------------------
+const temperature = 12;     // in degrees Celsius
+const isRaining = false;
+const windSpeed = 25;       // in km/h
+
+if (isRaining) {
+  // Rain has the highest priority
+  console.log("Stay indoors with hot coffee.");
+} else if (temperature > 35) {
+  console.log("Go swimming.");
+} else if (temperature < 15 && windSpeed > 20) {
+  // Both cold AND windy
+  console.log("Too cold and windy — stay home.");
+} else {
+  console.log("Perfect day for a walk.");
+}
+
+
+---------------------------------------------------------------------
+Q6. Progressive Discount System   (q6.js)
+---------------------------------------------------------------------
+const totalAmount = 6500;   // total purchase amount
+let discountPercent;
+
+// Discount tiers (checked from highest to lowest)
+if (totalAmount >= 10000) {
+  discountPercent = 25;
+} else if (totalAmount >= 5000) {
+  discountPercent = 15;
+} else if (totalAmount >= 2000) {
+  discountPercent = 5;
+} else {
+  discountPercent = 0;
+}
+
+// Final price after discount, rounded with Math.round()
+const discountAmount = (totalAmount * discountPercent) / 100;
+const finalPrice = Math.round(totalAmount - discountAmount);
+
+console.log("Original Total     : " + totalAmount);
+console.log("Discount Percentage: " + discountPercent + "%");
+console.log("Final Price        : " + finalPrice);
+
+
+---------------------------------------------------------------------
+Q7. Smart Guessing Game   (q7.js)
+---------------------------------------------------------------------
+// Secret number between 1 and 50
+const secret = Math.floor(Math.random() * 50) + 1;
+
+// Test value for the user's guess
+const userGuess = 25;
+
+console.log("Secret number (for testing): " + secret);
+console.log("Your guess: " + userGuess);
+
+if (userGuess === secret) {
+  console.log("Correct guess!");
+} else {
+  // Nested if: check closeness first
+  if (userGuess >= secret - 3 && userGuess <= secret + 3) {
+    console.log("Very close!");
+  } else {
+    if (userGuess > secret) {
+      console.log("Too high");
+    } else {
+      console.log("Too low");
+    }
+  }
+}
+
+
+---------------------------------------------------------------------
+Q8. Employee Salary Projection   (q8.js)
+---------------------------------------------------------------------
+let salary = 500000;          // current salary
+const incrementRate = 8;      // annual increment in %
+
+const projection = [];
+
+// Loop for 5 years
+for (let year = 1; year <= 5; year++) {
+  salary += salary * incrementRate / 100;   // apply increment (assignment operator)
+  salary = Math.round(salary);              // round to whole number
+  projection.push({ Year: year, Salary: salary });
+}
+
+// Print as a formatted table
+console.table(projection);
+
+
+---------------------------------------------------------------------
+Q9. Random Math Quiz Generator   (q9.js)
+---------------------------------------------------------------------
+// Two random numbers between 1 and 20
+const num1 = Math.floor(Math.random() * 20) + 1;
+const num2 = Math.floor(Math.random() * 20) + 1;
+
+// Random operator from the array
+const operators = ['+', '-', '*', '/'];
+const operator = operators[Math.floor(Math.random() * operators.length)];
+
+let answer;
+
+// switch statement calculates the correct answer
+switch (operator) {
+  case '+':
+    answer = num1 + num2;
+    break;
+  case '-':
+    answer = num1 - num2;
+    break;
+  case '*':
+    answer = num1 * num2;
+    break;
+  case '/':
+    answer = (num1 / num2).toFixed(2);   // division rounded to 2 decimals
+    break;
+  default:
+    answer = "Invalid operator";
+}
+
+console.log(`Question: What is ${num1} ${operator} ${num2} ?`);
+console.log(`Correct Answer: ${answer}`);
+
+
+---------------------------------------------------------------------
+Q10. Citizen Eligibility Validator   (q10.js)
+---------------------------------------------------------------------
+const age = 19;
+const isCitizen = true;
+
+/*
+  NOTE: The question says "all services" for citizen with age >= 18 AND
+  "vote only" for citizen aged 18-20. These two overlap, so the
+  "all services" case is taken as age >= 21 (so the 18-20 case is
+  reachable). Change 21 to 18 if your teacher wants the literal version.
+*/
+
+if (isCitizen) {
+  if (age >= 21) {
+    console.log("Eligible for all services.");
+  } else if (age >= 18 && age <= 20) {
+    console.log("Eligible to vote only.");
+  } else {
+    console.log("Not eligible yet.");
+  }
+} else {
+  if (age >= 18) {
+    console.log("Only age criteria met.");
+  } else {
+    console.log("Not eligible yet.");
+  }
+}
+
+=====================================================================
+ END OF SOLUTIONS
+=====================================================================
